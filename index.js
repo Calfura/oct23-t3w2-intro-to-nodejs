@@ -3,7 +3,7 @@ require('dotenv').config();
 // const dotenv = require('dotenv');
 // dotenv.config();
 const pokemonPrinterFile = require("./pokemonPrinter");
-
+const {pokemonNameFromNumber} = require('./pokemonPrinter');
 
 // import blahblah from 'dotenv';
 
@@ -22,40 +22,55 @@ let promptInstance = promptPackage({sigint: true});
 //
 // var n = prompt('What number of Pokemon do you want to see?');
 
-function app(){
-    let userWantsToExit = false;
 
-    do {
+function app() {
+	let userWantsToExit = false;
 
-        let n = parseFloat(prompt("What number of Pokemon do you want to see?"));
+	do {
 
-        console.log(typeof(n));
-        console.log("Input is not a number" + Number.isNaN(n));
-        console.log("You entered " + n);
+		let n = parseFloat(prompt("What number of Pokemon do you want to see?"));
 
-        if (Number.isNaN(n)){
-            throw new Error("User did not enter a number!")
+		// console.log(typeof(n));
+		// console.log("Input is not a number:" + Number.isNaN(n));
+
+		if (Number.isNaN(n)){
+			throw new Error("User did not enter a number!");
+		}
+
+		// Give number to pokemon package and get result
+		// let pokemonName = pokemonPrinterFile.pokemonNameFromNumber(n);
+        
+        try {
+            let pokemonName = pokemonNameFromNumber(n);
+            console.log(`Your Pokemon is ${pokemonName}! How exciting!`);
+        } catch (error) {
+            console.log("Try a number between 1 and 1025!");
         }
 
-        let userInputToExit = prompt("Would you like to try again?");
+		// console.log("You entered " + n);
 
-        if (userInputToExit == "y"){
-            userWantsToExit = false;
-        } else {
-            userWantsToExit = true;
-        }
+		let userInputToExit = prompt("Would you like to try again?");
 
-    } while (userWantsToExit == false);
+		if (userInputToExit == "y"){
+			userWantsToExit = false;
+		} else {
+			userWantsToExit = true;
+		}
+
+	} while (userWantsToExit == false);
 }
+
 
 try {
-    app();
+	app();
 } catch (error) {
-    console.log("Gracefully shutting down...")
-    console.log(error.message);
-    // Full error obj has stacktrace, users should not see that!!!
-    // console.log(error);
+	console.log("Gracefully shutting down...");
+	console.log(error.message);
+	// Full error obj has stacktrace, users should not see that:
+	// console.log(error);
 }
+
+
 
 
 // console.log("User entered: " + n);
@@ -90,3 +105,4 @@ try {
 // pokemonPrinterFile.pokemonPrinter();
 
 // console.log("Bye bye, terminal app finished!");
+
